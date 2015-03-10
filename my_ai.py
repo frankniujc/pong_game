@@ -100,14 +100,18 @@ def get_ball_y(ball_frect, table_size, paddle_frect):
                 speed = (old_ball_par[1][0]-old_ball_par[0][0], old_ball_par[1][1]-old_ball_par[0][1])
                 ball = Ball(table_size, ball_size, paddle_bounce, wall_bounce, dust_error, init_speed_mag, speed, ball_frect.pos)
 
+                count = 0
                 while ball.frect.pos[0] < table_size[0] - paddle_to_wall:    
                     ball.move(None, table_size)
+                    count += 1
+                    if count > 1000:
+                        break
                     #print(ball.frect.pos[1])
 
                 y = ball.frect.pos[1]
-                debug_info = 'y: ' + str(y)
+                #debug_info = 'y: ' + str(y)
                 #targating(ball_frect, table_size, paddle_frect)
-                print debug_info
+                #print debug_info
                 return y
         if len(old_ball_par):
             return ball_frect.pos[1]
@@ -119,63 +123,23 @@ def get_ball_y(ball_frect, table_size, paddle_frect):
                 speed = (old_ball_par[1][0]-old_ball_par[0][0], old_ball_par[1][1]-old_ball_par[0][1])
                 ball = Ball(table_size, ball_size, paddle_bounce, wall_bounce, dust_error, init_speed_mag, speed, ball_frect.pos)
 
-                print paddle_frect.pos[0]
-
+                count = 0
                 while ball.frect.pos[0] > paddle_frect.pos[0]:    
                     ball.move(None, table_size)
+                    count += 1
+                    if count > 1000:
+                        break
                     #print(ball.frect.pos[0])
 
                 y = ball.frect.pos[1]
-                debug_info = 'y: ' + str(y)
+                #debug_info = 'y: ' + str(y)
                 #targating(ball_frect, table_size, paddle_frect)
-                print debug_info
+                #print debug_info
                 return y
         if len(old_ball_par):
             return ball_frect.pos[1]
 
 
-def targating(ball_frect, table_size, paddle_frect):
-
-    table_size = (440, 280)
-    paddle_size = (10, 70)
-    ball_size = (15, 15)
-    paddle_speed = 1
-    max_angle = 45
-
-    paddle_bounce = 1.2
-    wall_bounce = 1.00
-    dust_error = 0.00
-    init_speed_mag = 2
-    timeout = .10
-    clock_rate = 80
-    turn_wait_rate = 3
-    score_to_win = 3
-
-    paddle_to_wall = table_size[0] - paddle_frect.pos[0]
-    
-    if len(old_ball_par) == 2:
-        if old_ball_par[1][0] != old_ball_par[0][0]:
-
-            speed = (-old_ball_par[1][0]+old_ball_par[0][0], -old_ball_par[1][1]+old_ball_par[0][1])
-            ball = Ball(table_size, ball_size, paddle_bounce, wall_bounce, dust_error, init_speed_mag, speed, ball_frect.pos)
-
-            time = 0
-
-            paddles = [Paddle((20, table_size[1]/2), paddle_size, paddle_speed, max_angle,  1, timeout),
-               Paddle((table_size[0]-20, table_size[1]/2), paddle_size, paddle_speed, max_angle, 0, timeout)]
-
-
-            while ball.frect.pos[0] > paddle_to_wall:    
-                ball.move(paddles, table_size)
-                time += 1
-
-            y = ball.frect.pos[1]
-            debug_info = 'y: ' + str(y)
-            print(debug_info)
-            return y
-    
-    if len(old_ball_par):
-        return ball_frect.pos[1]
 
 class Ball:
     def __init__(self, table_size, size, paddle_bounce, wall_bounce, dust_error, init_speed_mag, speed, pos):
