@@ -233,9 +233,6 @@ def directions_from_input(paddle_rect, other_paddle_rect, ball_rect, table_size)
     else:
         return None
 
-
-
-
 def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     '''From:
     http://code.activestate.com/recipes/473878-timeout-function-using-threading/'''
@@ -294,56 +291,55 @@ def check_point(score, ball, table_size):
 def game_loop(screen, paddles, ball, table_size, clock_rate, turn_wait_rate, score_to_win, display):
     score = [0, 0]
 
-
-
-
-
     while max(score) < score_to_win:
         old_score = score[:]
         ball, score = check_point(score, ball, table_size)
-        paddles[0].move(paddles[1].frect, ball.frect, table_size)
-        paddles[1].move(paddles[0].frect, ball.frect, table_size)
+        try:
+            paddles[0].move(paddles[1].frect, ball.frect, table_size)
+            paddles[1].move(paddles[0].frect, ball.frect, table_size)
+        except RuntimeError:
+            paddles[1].move(paddles[0].frect, ball.frect, table_size)
         ball.move(paddles, table_size)
-        if not display:
-            continue
-        if score != old_score:
-            font = pygame.font.Font(None, 32)
-            if score[0] != old_score[0]:
-                screen.blit(font.render("Left scores!", True, white, black), [0, 32])
-            else:
-                screen.blit(font.render("Right scores!", True, white, black), [int(table_size[0]/2+20), 32])
+        # if not display:
+        #     continue
+        # if score != old_score:
+        #     font = pygame.font.Font(None, 32)
+            # if score[0] != old_score[0]:
+            #     screen.blit(font.render("Left scores!", True, white, black), [0, 32])
+            # else:
+            #     screen.blit(font.render("Right scores!", True, white, black), [int(table_size[0]/2+20), 32])
 
 
-            pygame.display.flip()
-            clock.tick(turn_wait_rate)
-
-
-
-        render(screen, paddles, ball, score, table_size)
+            #pygame.display.flip()
+            #clock.tick(turn_wait_rate)
 
 
 
-        pygame.event.pump()
+        #render(screen, paddles, ball, score, table_size)
+        #print(score)
+
+
+       # pygame.event.pump()
         keys = pygame.key.get_pressed()
         if keys[K_q]:
             return
 
 
 
-        clock.tick(clock_rate)
+        #clock.tick(clock_rate)
 
-    font = pygame.font.Font(None, 64)
-    if score[0] > score[1]:
-        screen.blit(font.render("Left wins!", True, white, black), [24, 32])
-    else:
-        screen.blit(font.render("Right wins!", True, white, black), [24, 32])
-    pygame.display.flip()
-    clock.tick(2)
+    # font = pygame.font.Font(None, 64)
+    # if score[0] > score[1]:
+    #     screen.blit(font.render("Left wins!", True, white, black), [24, 32])
+    # else:
+    #     screen.blit(font.render("Right wins!", True, white, black), [24, 32])
+    #pygame.display.flip()
+    #clock.tick(2)
 
     pygame.event.pump()
-    while any(pygame.key.get_pressed()):
-        pygame.event.pump()
-        clock.tick(30)
+    #while any(pygame.key.get_pressed()):
+     #   pygame.event.pump()
+        #clock.tick(30)
 
     print(score)
     return
@@ -362,7 +358,7 @@ def init_game():
     timeout = .10
     clock_rate = 80
     turn_wait_rate = 3
-    score_to_win = 3
+    score_to_win = 10
 
 
     screen = pygame.display.set_mode(table_size)
@@ -373,15 +369,16 @@ def init_game():
     ball = Ball(table_size, ball_size, paddle_bounce, wall_bounce, dust_error, init_speed_mag)
 
     import chaser_ai
+    import aggressive_ai
     import my_ai
     paddles[0].move_getter = chaser_ai.chaser
     paddles[1].move_getter = my_ai.pong_ai
     
     game_loop(screen, paddles, ball, table_size, clock_rate, turn_wait_rate, score_to_win, 1)
-    screen.blit(pygame.font.Font(None, 32).render(str('SWITCHING SIDES'), True, white), [int(0.6*table_size[0])-8, 0])
+    #screen.blit(pygame.font.Font(None, 32).render(str('SWITCHING SIDES'), True, white), [int(0.6*table_size[0])-8, 0])
     
-    pygame.display.flip()
-    clock.tick(4)
+    #pygame.display.flip()
+    #clock.tick(4)
     
     paddles[0].move_getter, paddles[1].move_getter = paddles[1].move_getter, paddles[0].move_getter
     

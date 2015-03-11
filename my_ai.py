@@ -1,8 +1,5 @@
 old_ball_par = []
 
-import pygame, sys, time, random, os
-#from pygame.locals import *
-
 import math
 
 def pong_ai(paddle_frect, other_paddle_frect, ball_frect, table_size):
@@ -110,7 +107,7 @@ def get_ball_y(ball_frect, table_size, paddle_frect):
                 y = ball.frect.pos[1]
                 debug_info = 'y: ' + str(y)
                 #targating(ball_frect, table_size, paddle_frect)
-                print debug_info
+                #print debug_info
                 return y
         if len(old_ball_par):
             return ball_frect.pos[1]
@@ -133,7 +130,7 @@ def get_ball_y(ball_frect, table_size, paddle_frect):
                 y = ball.frect.pos[1]
                 debug_info = 'y: ' + str(y)
                 #targating(ball_frect, table_size, paddle_frect)
-                print debug_info
+               # print debug_info
                 return y
         if len(old_ball_par):
             return ball_frect.pos[1]
@@ -174,12 +171,12 @@ class Ball:
         for wall_rect in walls_Rects:
             if self.frect.get_rect().colliderect(wall_rect):
                 c = 0
-                print "in wall. speed: ", self.speed
+                #print "in wall. speed: ", self.speed
                 while self.frect.get_rect().colliderect(wall_rect):
                     self.frect.move_ip(-.1*self.speed[0], -.1*self.speed[1])
                     c += 1 # this basically tells us how far the ball has traveled into the wall
-                r1 = 1+2*(random.random()-.5)*self.dust_error
-                r2 = 1+2*(random.random()-.5)*self.dust_error
+                r1 = 1
+                r2 = 1
 
                 self.speed = (self.wall_bounce*self.speed[0]*r1, -self.wall_bounce*self.speed[1]*r2)
                 while c > 0 or self.frect.get_rect().colliderect(wall_rect):
