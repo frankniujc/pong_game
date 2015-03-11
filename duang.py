@@ -1,3 +1,9 @@
+"""
+Team name: duang
+Team members: Jingcheng Niu, Keith Shiran Yang
+Student Numbers: 1001117221, 1001506630
+"""
+
 import math
 
 old_ball_par = []
